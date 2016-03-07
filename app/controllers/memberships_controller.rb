@@ -29,6 +29,7 @@ class MembershipsController < ApplicationController
     club = BeerClub.find membership_params[:beer_club_id]
     if not current_user.in? club.members and @membership.save
       current_user.memberships << @membership
+      @membership.confirmed = false
       @membership.save
       redirect_to beer_club_path(club), notice: "Welcome to #{@membership.beer_club.name}"
     else
@@ -59,6 +60,15 @@ class MembershipsController < ApplicationController
       format.html { redirect_to user_path(@membership.user), notice: 'Membership was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def toggle_activity
+    membership = Membership.find(params[:id])
+    membership.update_attribute :confirmed, (not membership.confirmed)
+
+    new_status = membership.confirmed? ? "confirmed" : "not confirmed"
+
+    redirect_to :back, notice:"membership status changed to #{new_status}"
   end
 
   private

@@ -1,18 +1,33 @@
 source 'https://rubygems.org'
 
-ruby '2.2.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.5'
 # Use sqlite3 as the database for Active Record
+
+ruby '2.3.0'
+
+gem 'bcrypt', '~> 3.1.7'
+
 group :development, :test do
   gem 'sqlite3'
 end
 
 group :production do
-   gem 'pg'
-   gem 'rails_12factor'
+  gem 'pg'
+  gem 'rails_12factor'
 end
+
+group :development, :test do
+  gem "better_errors"
+
+  #...
+end
+
+group :development, :test do
+  gem 'rspec-rails', '~> 3.0'
+end
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -20,7 +35,7 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
+gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -32,7 +47,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use ActiveModel has_secure_password
-gem 'bcrypt', '~> 3.1.7'
+# gem 'bcrypt', '~> 3.1.7'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
@@ -45,15 +60,6 @@ group :development, :test do
   gem 'byebug'
 end
 
-group :test do
-  gem 'factory_girl_rails'
-  gem 'capybara'
-  gem 'launchy'
-  gem 'webmock'
-end
-
-gem 'simplecov', require: false
-
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
@@ -62,8 +68,15 @@ group :development do
   gem 'spring'
 end
 
-group :development, :test do
-  gem 'rspec-rails', '~> 3.0'
+group :test do
+  gem 'factory_girl_rails'
+  gem 'capybara'
+  gem 'launchy'
+  gem 'rspec-its'
+  gem 'simplecov', require: false
+  gem 'webmock'
+  gem 'selenium-webdriver'
+  gem 'database_cleaner'
 end
 
 gem 'httparty'
@@ -72,3 +85,10 @@ gem 'bootstrap-sass'
 group :development do
   gem 'rails_layout'
 end
+
+gem 'jquery-turbolinks'
+
+gem 'rack-mini-profiler'
+
+gem 'omniauth-github'
+

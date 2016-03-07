@@ -1,10 +1,12 @@
 class RatingsController < ApplicationController
   def index
-    @recent = Rating.recent
-    @beers = Beer.top(3)
-    @styles = Style.top(3)
-    @breweries = Brewery.top(3)
-    @users = User.top(4)
+    Rails.cache.write("beer top 3", Beer.top(3)) if cache_does_not_contain_data_or_it_is_too_old
+    @top_beers = Rails.cache.read "beer top 3"
+    @top_breweries = Brewery.top(3)
+    @top_styles = Style.top(3)
+    @most_active_users = User.most_active(3)
+    @recent_ratings = Rating.recent
+    @ratings = Rating.all
   end
 
   def new

@@ -1,7 +1,8 @@
 class BeerClubsController < ApplicationController
   before_action :set_beer_club, only: [:show, :edit, :update, :destroy]
   before_action :ensure_that_signed_in, except: [:index, :show]
-  before_action :ensure_that_admin, only: [:delete]
+  before_action :ensure_that_admin, only: [:destroy]
+  before_action :ensure_that_confirmed, only: [:destroy, :edit, :update]
 
   # GET /beer_clubs
   # GET /beer_clubs.json
@@ -37,6 +38,7 @@ class BeerClubsController < ApplicationController
     respond_to do |format|
       if @beer_club.save
         format.html { redirect_to @beer_club, notice: 'Beer club was successfully created.' }
+        Membership.create(user: current_user, beer_club: @beer_club, confirmed: true)
         format.json { render :show, status: :created, location: @beer_club }
       else
         format.html { render :new }
@@ -79,4 +81,8 @@ class BeerClubsController < ApplicationController
     def beer_club_params
       params.require(:beer_club).permit(:name, :city, :founded)
     end
+
+  def ensure_that_confirmed
+    redirect_to beer_clubs_path, notice: "You should be a confirmed member" unless Membership.where(user_id:current_user.id, beer_club_id:@beer_club.id).first and Membership.where(user_id:current_user.id, beer_club_id:@beer_club.id).first.confirmed?
+  end
 end
